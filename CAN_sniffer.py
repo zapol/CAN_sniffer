@@ -12,9 +12,7 @@ import argparse
 ROWS = 4
 COLS = 16
 TOTAL_PIXELS = ROWS * COLS
-MIN_COLOR = QColor.fromRgbF(0, 0, 1)  # Blue for the minimum temperature
-MAX_COLOR = QColor.fromRgbF(1, 0, 0)  # Red for the maximum temperature
-
+CAN_IR_ADDRESS = 0x730
 class CAN_Sniffer(QtWidgets.QMainWindow):
     def __init__(self, parent=None, port=None):
         super(CAN_Sniffer, self).__init__(parent)
@@ -73,8 +71,8 @@ class CAN_Sniffer(QtWidgets.QMainWindow):
                 break
 
     def update_ir_data(self, std_id, new_data):
-        if 0x100 <= std_id <= 0x10F:
-            index = (std_id - 0x100) * 4
+        if CAN_IR_ADDRESS <= std_id <= CAN_IR_ADDRESS + 0x0F:
+            index = (std_id - CAN_IR_ADDRESS) * 4
             self.ir_data[index:index + 4] = new_data
 
     def update_data(self, CanRxMsg):
@@ -85,7 +83,8 @@ class CAN_Sniffer(QtWidgets.QMainWindow):
         self.ui.tMinLabel.setText(f'{np.min(self.ir_data)/10:.1f}°C')
         self.ui.tMaxLabel.setText(f'{np.max(self.ir_data)/10:.1f}°C')
         self.ui.tAvgLabel.setText(f'{np.mean(self.ir_data)/10:.1f}°C')
-        self.update_ir_image()
+        self.ui.irImageFL.updateData(self.ir_data)
+        # self.update_ir_image()
 
         if ide == 0x00000000:
             msg_id = std_id
@@ -135,9 +134,8 @@ class CAN_Sniffer(QtWidgets.QMainWindow):
 
     def update_ir_image(self):
         if not np.all(self.ir_data == 0):
-            reshaped_data = self.ir_data.reshape((COLS, ROWS))
-            # rotate 90 degrees
-            reshaped_data = np.rot90(reshaped_data, 3)
+            reshaped_data = self.ir_data.reshape((ROWS, COLS))
+            reshaped_data = np.fliplr(reshaped_data)
             height, width = reshaped_data.shape
             min_val = np.min(reshaped_data)
             max_val = np.max(reshaped_data)
