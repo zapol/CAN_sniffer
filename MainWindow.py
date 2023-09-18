@@ -43,11 +43,11 @@ class Ui_MainWindow(object):
 
         # Horizontal layout for controls and IR images
         self.mainHLayout = QHBoxLayout()
-        
+
         # Vertical layout for config and table
         self.configAndTableLayout = QVBoxLayout()
         self.configForm = QFormLayout()
-        
+
         self.samplingRateCb = QComboBox()
         self.samplingRateCb.addItems(["1 Hz", "2.5 Hz", "5 Hz", "10 Hz"])
         self.configForm.addRow("Sampling Rate", self.samplingRateCb)
@@ -71,13 +71,17 @@ class Ui_MainWindow(object):
         self.dataTable.setEditTriggers(QAbstractItemView.NoEditTriggers)
         self.dataTable.setSelectionMode(QAbstractItemView.ExtendedSelection)
         self.dataTable.setSelectionBehavior(QAbstractItemView.SelectRows)
-        for i in range(10):
+        self.dataTable.horizontalHeader().setSectionResizeMode(
+            0, QHeaderView.ResizeToContents)
+        self.dataTable.horizontalHeader().setSectionResizeMode(
+            1, QHeaderView.ResizeToContents)
+        for i in range(2, 10):
             self.dataTable.horizontalHeader().setSectionResizeMode(
-                i, QHeaderView.ResizeToContents)
+                i, QHeaderView.Stretch)
         # End of data table
 
         self.configAndTableLayout.addWidget(self.dataTable)
-        
+
         # End of config and table layout
 
         self.mainHLayout.addLayout(self.configAndTableLayout)
@@ -90,7 +94,7 @@ class Ui_MainWindow(object):
                          "RL": IrImageWidget("RL", self.centralwidget),
                          "RR": IrImageWidget("RR", self.centralwidget)
                          }
-        
+
         for i, name in enumerate(self.irImages):
             self.irImagesLayout.addWidget(self.irImages[name], i // 2, i % 2)
 
@@ -99,8 +103,6 @@ class Ui_MainWindow(object):
             20, 40, QSizePolicy.Minimum, QSizePolicy.Expanding), 2, 0)
         self.irImagesLayout.addItem(QSpacerItem(
             20, 40, QSizePolicy.Minimum, QSizePolicy.Expanding), 2, 1)
-        
-        
 
         self.mainHLayout.addLayout(self.irImagesLayout)
 
