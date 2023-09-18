@@ -61,8 +61,8 @@ class IrImageWidget(QWidget):
             self.avg_val = np.mean(self.data)
 
             self.tempMinLabel.setText(f'TempMin: {self.min_val:.1f}°C')
-            self.tempMaxLabel.setText(f'TempAvg: {self.max_val:.1f}°C')
-            self.tempAvgLabel.setText(f'TempMax: {self.avg_val:.1f}°C')
+            self.tempMaxLabel.setText(f'TempMax: {self.max_val:.1f}°C')
+            self.tempAvgLabel.setText(f'TempAvg: {self.avg_val:.1f}°C')
 
             rgb_data = np.zeros((self.rows, self.columns, 3), dtype=np.uint8)
 

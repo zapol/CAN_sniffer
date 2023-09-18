@@ -36,9 +36,34 @@ class CAN_Sniffer(QtWidgets.QMainWindow):
 
         self.timer.timeout.connect(self.read_data)
         self.ui.serialPortSelectPb.clicked.connect(self.on_select_port)
+        self.ui.applyConfigPb.clicked.connect(self.on_apply_config)
 
         if port is not None:
             self.connect_to_port(port)
+
+    def on_apply_config(self):
+        print('Apply config')
+        sampling_rate = self.ui.samplingRateCb.currentIndex()
+        # Encode enabled rows in a byte
+        row_en = 0
+        for i in range(4):
+            if self.ui.rowEnCb[i].isChecked():
+                row_en |= 1 << i
+        print(f'Sampling rate: {sampling_rate}, Row enable: {row_en}')
+        if self.serial is not None:
+            self.sendPacket(struct.pack('<BB', sampling_rate, row_en), CAN_ADDRESS['CFG'])
+
+    def sendPacket(self, data, stdid=CAN_ADDRESS['CFG'], extid=0, ide=0, rtr=0, dlc=None):
+        if dlc is None:
+            dlc = len(data)
+        # extend data to 8 bytes
+        data = data.ljust(8, b'\x00')
+        packet = struct.pack("<LLBBB8s", stdid, extid, ide, rtr, dlc, data)
+        packet = b'SND' + packet
+        self.serial.write(packet)
+
+        print(f'Sent: {packet.hex()}')
+
 
     def on_select_port(self):
         import serial.tools.list_ports

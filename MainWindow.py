@@ -41,12 +41,31 @@ class Ui_MainWindow(object):
 
         self.verticalLayout.addLayout(self.serialPortHLayout)
 
-        # Horizontal layout for data table and IR images
+        # Horizontal layout for controls and IR images
         self.mainHLayout = QHBoxLayout()
+        
+        # Vertical layout for config and table
+        self.configAndTableLayout = QVBoxLayout()
+        self.configForm = QFormLayout()
+        
+        self.samplingRateCb = QComboBox()
+        self.samplingRateCb.addItems(["1 Hz", "2.5 Hz", "5 Hz", "10 Hz"])
+        self.configForm.addRow("Sampling Rate", self.samplingRateCb)
+
+        self.rowEnCb = list()
+        for i in range(4):
+            self.rowEnCb.append(QCheckBox())
+            self.configForm.addRow(f"Row {i+1} En", self.rowEnCb[i])
+            self.rowEnCb[i].setChecked(True)
+
+        self.applyConfigPb = QPushButton("Apply Config")
+        self.configForm.addRow(self.applyConfigPb, None)
+
+        self.configAndTableLayout.addLayout(self.configForm)
 
         # Data table
         self.dataTable = QTableWidget(0, 10, self.centralwidget)
-        self.dataTable.setMaximumWidth(500)
+        self.dataTable.setMaximumWidth(400)
         self.dataTable.setHorizontalHeaderLabels(
             [u"ID", u"Count", u"B0", u"B1", u"B2", u"B3", u"B4", u"B5", u"B6", u"B7"])
         self.dataTable.setEditTriggers(QAbstractItemView.NoEditTriggers)
@@ -57,7 +76,11 @@ class Ui_MainWindow(object):
                 i, QHeaderView.ResizeToContents)
         # End of data table
 
-        self.mainHLayout.addWidget(self.dataTable)
+        self.configAndTableLayout.addWidget(self.dataTable)
+        
+        # End of config and table layout
+
+        self.mainHLayout.addLayout(self.configAndTableLayout)
 
         # IR image widgets
         self.irImagesLayout = QGridLayout()
