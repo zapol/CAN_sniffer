@@ -25,66 +25,66 @@ class Ui_MainWindow(object):
         self.verticalLayout = QVBoxLayout(self.centralwidget)
 
         # Horizontal layout for serial port selection
-        self.serialPortHLayout = QHBoxLayout()
+        # self.serialPortHLayout = QHBoxLayout()
 
-        self.serialPortLbl = QLabel(u"Port", self.centralwidget)
-        self.serialPortHLayout.addWidget(self.serialPortLbl)
+        # self.serialPortLbl = QLabel(u"Port", self.centralwidget)
+        # self.serialPortHLayout.addWidget(self.serialPortLbl)
 
-        self.serialPortSelectPb = QPushButton(
-            u"Select Port", self.centralwidget)
-        self.serialPortHLayout.addWidget(self.serialPortSelectPb)
+        # self.serialPortSelectPb = QPushButton(
+        #     u"Select Port", self.centralwidget)
+        # self.serialPortHLayout.addWidget(self.serialPortSelectPb)
 
-        self.horizontalSpacer = QSpacerItem(
-            40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
-        self.serialPortHLayout.addItem(self.horizontalSpacer)
+        # self.horizontalSpacer = QSpacerItem(
+        #     40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
+        # self.serialPortHLayout.addItem(self.horizontalSpacer)
         # End of serial port selection
 
-        self.verticalLayout.addLayout(self.serialPortHLayout)
+        # self.verticalLayout.addLayout(self.serialPortHLayout)
 
         # Horizontal layout for controls and IR images
         self.mainHLayout = QHBoxLayout()
 
-        # Vertical layout for config and table
-        self.configAndTableLayout = QVBoxLayout()
-        self.configForm = QFormLayout()
+        # # Vertical layout for config and table
+        # self.configAndTableLayout = QVBoxLayout()
+        # self.configForm = QFormLayout()
 
-        self.samplingRateCb = QComboBox()
-        self.samplingRateCb.addItems(["1 Hz", "2.5 Hz", "5 Hz", "10 Hz"])
-        self.configForm.addRow("Sampling Rate", self.samplingRateCb)
+        # self.samplingRateCb = QComboBox()
+        # self.samplingRateCb.addItems(["1 Hz", "2.5 Hz", "5 Hz", "10 Hz"])
+        # self.configForm.addRow("Sampling Rate", self.samplingRateCb)
 
-        self.rowEnCb = list()
-        for i in range(4):
-            self.rowEnCb.append(QCheckBox())
-            self.configForm.addRow(f"Row {i+1} En", self.rowEnCb[i])
-            self.rowEnCb[i].setChecked(True)
+        # self.rowEnCb = list()
+        # for i in range(4):
+        #     self.rowEnCb.append(QCheckBox())
+        #     self.configForm.addRow(f"Row {i+1} En", self.rowEnCb[i])
+        #     self.rowEnCb[i].setChecked(True)
 
-        self.applyConfigPb = QPushButton("Apply Config")
-        self.configForm.addRow(self.applyConfigPb, None)
+        # self.applyConfigPb = QPushButton("Apply Config")
+        # self.configForm.addRow(self.applyConfigPb, None)
 
-        self.configAndTableLayout.addLayout(self.configForm)
+        # self.configAndTableLayout.addLayout(self.configForm)
 
-        # Data table
-        self.dataTable = QTableWidget(0, 10, self.centralwidget)
-        self.dataTable.setMaximumWidth(400)
-        self.dataTable.setHorizontalHeaderLabels(
-            [u"ID", u"Count", u"B0", u"B1", u"B2", u"B3", u"B4", u"B5", u"B6", u"B7"])
-        self.dataTable.setEditTriggers(QAbstractItemView.NoEditTriggers)
-        self.dataTable.setSelectionMode(QAbstractItemView.ExtendedSelection)
-        self.dataTable.setSelectionBehavior(QAbstractItemView.SelectRows)
-        self.dataTable.horizontalHeader().setSectionResizeMode(
-            0, QHeaderView.ResizeToContents)
-        self.dataTable.horizontalHeader().setSectionResizeMode(
-            1, QHeaderView.ResizeToContents)
-        for i in range(2, 10):
-            self.dataTable.horizontalHeader().setSectionResizeMode(
-                i, QHeaderView.Stretch)
-        # End of data table
+        # # Data table
+        # self.dataTable = QTableWidget(0, 10, self.centralwidget)
+        # self.dataTable.setMaximumWidth(400)
+        # self.dataTable.setHorizontalHeaderLabels(
+        #     [u"ID", u"Count", u"B0", u"B1", u"B2", u"B3", u"B4", u"B5", u"B6", u"B7"])
+        # self.dataTable.setEditTriggers(QAbstractItemView.NoEditTriggers)
+        # self.dataTable.setSelectionMode(QAbstractItemView.ExtendedSelection)
+        # self.dataTable.setSelectionBehavior(QAbstractItemView.SelectRows)
+        # self.dataTable.horizontalHeader().setSectionResizeMode(
+        #     0, QHeaderView.ResizeToContents)
+        # self.dataTable.horizontalHeader().setSectionResizeMode(
+        #     1, QHeaderView.ResizeToContents)
+        # for i in range(2, 10):
+        #     self.dataTable.horizontalHeader().setSectionResizeMode(
+        #         i, QHeaderView.Stretch)
+        # # End of data table
 
-        self.configAndTableLayout.addWidget(self.dataTable)
+        # self.configAndTableLayout.addWidget(self.dataTable)
 
         # End of config and table layout
 
-        self.mainHLayout.addLayout(self.configAndTableLayout)
+        # self.mainHLayout.addLayout(self.configAndTableLayout)
 
         # IR image widgets
         self.irImagesLayout = QGridLayout()

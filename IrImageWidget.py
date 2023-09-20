@@ -19,25 +19,25 @@ class IrImageWidget(QWidget):
         
     def setupUi(self):
         # Initialize UI components
-        self.nameLabel = QLabel(self.name)
+        # self.nameLabel = QLabel(self.name)
         # self.imageLabel = QLabel('IMAGE')
         self.image = QGraphicsView(self)
         self.image.setRenderHint(QPainter.Antialiasing)
         # self.image.setAspectMode
-        self.tempMinLabel = QLabel('TempMin: ')
-        self.tempAvgLabel = QLabel('TempAvg:')
-        self.tempMaxLabel = QLabel('TempMax:')
+        self.tempMinLabel = QLabel('TMin: ')
+        # self.tempAvgLabel = QLabel('TAvg:')
+        self.tempMaxLabel = QLabel('TMax:')
 
         # Layout
         layout = QVBoxLayout()
-        layout.addWidget(self.nameLabel)
+        # layout.addWidget(self.nameLabel)
         # layout.addWidget(self.imageLabel)
         layout.addWidget(self.image)
 
         # Temperature labels
         hlayout = QHBoxLayout()
         hlayout.addWidget(self.tempMinLabel)
-        hlayout.addWidget(self.tempAvgLabel)
+        # hlayout.addWidget(self.tempAvgLabel)
         hlayout.addWidget(self.tempMaxLabel)
 
         layout.addLayout(hlayout)
@@ -60,9 +60,9 @@ class IrImageWidget(QWidget):
             self.max_val = np.max(self.data)
             self.avg_val = np.mean(self.data)
 
-            self.tempMinLabel.setText(f'TempMin: {self.min_val:.1f}°C')
-            self.tempMaxLabel.setText(f'TempMax: {self.max_val:.1f}°C')
-            self.tempAvgLabel.setText(f'TempAvg: {self.avg_val:.1f}°C')
+            self.tempMinLabel.setText(f'TMin: {self.min_val:.1f}°C')
+            # self.tempAvgLabel.setText(f'TAvg: {self.avg_val:.1f}°C')
+            self.tempMaxLabel.setText(f'TMax: {self.max_val:.1f}°C')
 
             rgb_data = np.zeros((self.rows, self.columns, 3), dtype=np.uint8)
 

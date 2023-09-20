@@ -46,36 +46,37 @@ class CAN_Sniffer(QtWidgets.QMainWindow):
         self.uiUpdateTimer.timeout.connect(self.update_ui)
         self.uiUpdateTimer.start(50)
 
-        self.ui.serialPortSelectPb.clicked.connect(self.on_select_port)
-        self.ui.applyConfigPb.clicked.connect(self.on_apply_config)
-
+        # self.ui.serialPortSelectPb.clicked.connect(self.on_select_port)
+        # self.ui.applyConfigPb.clicked.connect(self.on_apply_config)
+        self.setFixedSize(480, 320)
+        self.setWindowFlag(QtCore.Qt.FramelessWindowHint)
         if port is not None:
             self.connect_to_port(port)
 
     def update_ui(self):
-        self.ui.dataTable.setUpdatesEnabled(False)
-        for msg_id, row in self.messages.items():
-            for i in range(10):
-                item = row[i][1]
-                if i == 0:
-                    item.setText(f'0x{msg_id:04X}')
-                elif i == 1:
-                    item.setText(str(row[i][0]))
-                else:
-                    item.setText(str(row[i][0]))
-                    if row[i][3]:
-                        item.setBackground(QtGui.QColor(200, 200, 200))
-                    elif row[i][2]:
-                        item.setBackground(QtGui.QColor(255, 255, 0))
-                    else:
-                        item.setBackground(QtGui.QColor(255, 255, 255))
+        # self.ui.dataTable.setUpdatesEnabled(False)
+        # for msg_id, row in self.messages.items():
+        #     for i in range(10):
+        #         item = row[i][1]
+        #         if i == 0:
+        #             item.setText(f'0x{msg_id:04X}')
+        #         elif i == 1:
+        #             item.setText(str(row[i][0]))
+        #         else:
+        #             item.setText(str(row[i][0]))
+        #             if row[i][3]:
+        #                 item.setBackground(QtGui.QColor(200, 200, 200))
+        #             elif row[i][2]:
+        #                 item.setBackground(QtGui.QColor(255, 255, 0))
+        #             else:
+        #                 item.setBackground(QtGui.QColor(255, 255, 255))
 
         for sensor in SENSORS:
             new_data = np.fliplr(self.ir_data[sensor])
             if (np.max(new_data) > 0):
                 self.ui.irImages[sensor].updateData(new_data)
 
-        self.ui.dataTable.setUpdatesEnabled(True)
+        # self.ui.dataTable.setUpdatesEnabled(True)
 
     def on_apply_config(self):
         logger.info('Apply config')
@@ -115,7 +116,7 @@ class CAN_Sniffer(QtWidgets.QMainWindow):
             self.connect_to_port(port)
 
     def connect_to_port(self, port):
-        self.ui.serialPortSelectPb.setText(port)
+        # self.ui.serialPortSelectPb.setText(port)
         try:
             self.serial = serial.Serial(
                 port, 921600, timeout=0, exclusive=True)
@@ -164,39 +165,39 @@ class CAN_Sniffer(QtWidgets.QMainWindow):
                 self.ir_data[sensor][row, column:column+4] = ir_data
                 break
 
-        # Check if the ID already exists in the table
-        if msg_id in self.messages:
-            row = self.messages[msg_id]
-        else:
-            # Add a new row to the table
-            row_position = self.ui.dataTable.rowCount()
-            self.ui.dataTable.insertRow(row_position)
-            row = [[msg_id, QtWidgets.QTableWidgetItem(f'0x{msg_id:X}'), False, False],
-                   [0, QtWidgets.QTableWidgetItem(), True, False],  # Count
-                   [0, QtWidgets.QTableWidgetItem(), True, False],  # data[0]
-                   [0, QtWidgets.QTableWidgetItem(), True, False],  # data[1]
-                   [0, QtWidgets.QTableWidgetItem(), True, False],  # data[2]
-                   [0, QtWidgets.QTableWidgetItem(), True, False],  # data[3]
-                   [0, QtWidgets.QTableWidgetItem(), True, False],  # data[4]
-                   [0, QtWidgets.QTableWidgetItem(), True, False],  # data[5]
-                   [0, QtWidgets.QTableWidgetItem(), True, False],  # data[6]
-                   [0, QtWidgets.QTableWidgetItem(), True, False],  # data[7]
-                   ]
-            self.messages[msg_id] = row
-            for item in row:
-                self.ui.dataTable.setItem(
-                    row_position, row.index(item), item[1])
+        # # Check if the ID already exists in the table
+        # if msg_id in self.messages:
+        #     row = self.messages[msg_id]
+        # else:
+        #     # Add a new row to the table
+        #     row_position = self.ui.dataTable.rowCount()
+        #     self.ui.dataTable.insertRow(row_position)
+        #     row = [[msg_id, QtWidgets.QTableWidgetItem(f'0x{msg_id:X}'), False, False],
+        #            [0, QtWidgets.QTableWidgetItem(), True, False],  # Count
+        #            [0, QtWidgets.QTableWidgetItem(), True, False],  # data[0]
+        #            [0, QtWidgets.QTableWidgetItem(), True, False],  # data[1]
+        #            [0, QtWidgets.QTableWidgetItem(), True, False],  # data[2]
+        #            [0, QtWidgets.QTableWidgetItem(), True, False],  # data[3]
+        #            [0, QtWidgets.QTableWidgetItem(), True, False],  # data[4]
+        #            [0, QtWidgets.QTableWidgetItem(), True, False],  # data[5]
+        #            [0, QtWidgets.QTableWidgetItem(), True, False],  # data[6]
+        #            [0, QtWidgets.QTableWidgetItem(), True, False],  # data[7]
+        #            ]
+        #     self.messages[msg_id] = row
+        #     for item in row:
+        #         self.ui.dataTable.setItem(
+        #             row_position, row.index(item), item[1])
 
-        # Update the count
-        self.messages[msg_id][1][0] += 1
+        # # Update the count
+        # self.messages[msg_id][1][0] += 1
 
-        # Update the data bytes (B0 to B7)
-        for i in range(8):
-            old_value = self.messages[msg_id][i+2][0]
-            new_value = data[i]
-            self.messages[msg_id][i+2][0] = new_value
-            self.messages[msg_id][i+2][2] = old_value != new_value
-            self.messages[msg_id][i+2][3] = i >= dlc
+        # # Update the data bytes (B0 to B7)
+        # for i in range(8):
+        #     old_value = self.messages[msg_id][i+2][0]
+        #     new_value = data[i]
+        #     self.messages[msg_id][i+2][0] = new_value
+        #     self.messages[msg_id][i+2][2] = old_value != new_value
+        #     self.messages[msg_id][i+2][3] = i >= dlc
 
     def closeEvent(self, event):
         if self.serial is not None:
